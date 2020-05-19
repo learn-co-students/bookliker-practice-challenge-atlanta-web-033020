@@ -79,3 +79,19 @@ function likeBook(book){
         expandBook(response)
     })
 }
+
+array = [1, 2, 3, 4, 5]
+let newary = array.map(function(element){
+    return element * element
+})
+console.log(newary)
+
+// let filAry = array.filter(function(element){
+//     return element % 2 === 0
+// })
+
+let filAry = array.filter(e => e % 2 === 0)
+console.log(filAry)
+
+let sum = array.reduce((agg, e) => agg + e)
+console.log(sum)
