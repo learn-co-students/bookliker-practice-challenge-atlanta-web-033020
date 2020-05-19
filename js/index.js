@@ -33,6 +33,9 @@ function expandBook(book) {
     book_img.src = book.img_url
     let desc = document.createElement('p')
     desc.innerText = book.description
+    while ( parent.lastChild ) {
+        parent.lastChild.remove()
+    }
     parent.append(title, book_img, desc)
     let users = book.users;
     users.forEach(function(user){
@@ -51,12 +54,28 @@ function expandBook(book) {
 }
 
 function likeBook(book){
-    fetch('http://localhost:3000/books/id')
+    const newUser = {id: 1, username: "pouros"} 
+    found = book.users.find((user) => {
+        return user.id === newUser.id
+    })
+    if ( found )
+        book.users.splice(book.users.indexOf(found), 1)
+    else
+        book.users.push(newUser)
+    const bookObj = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            users: book.users
+        })
+    }
+    fetch(`http://localhost:3000/books/${book.id}`, bookObj)
     .then(function(response) {
         return response.json();
     })
     .then(function(response){
-        listTheBooks(response)
+        expandBook(response)
     })
-    console.log(book)
 }
